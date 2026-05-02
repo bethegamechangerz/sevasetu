@@ -1,0 +1,1034 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SevaSetu — Capstone Presentation · Abhay Chandel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      html, body {
+        height: 100%;
+        background: #050a0c;
+        color: #e5e7eb;
+        font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      .deva { font-family: 'Noto Sans Devanagari', 'Inter', sans-serif; }
+      .slide {
+        scroll-snap-align: start;
+        min-height: 100dvh;
+        padding: 4rem 6rem 6rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        background:
+          radial-gradient(ellipse at 90% -10%, rgba(16,185,129,0.10) 0%, transparent 60%),
+          radial-gradient(ellipse at -10% 110%, rgba(59,130,246,0.08) 0%, transparent 60%),
+          linear-gradient(180deg, #050a0c 0%, #08111a 100%);
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+      }
+      .scroll-host {
+        height: 100dvh;
+        overflow-y: scroll;
+        scroll-snap-type: y mandatory;
+        scroll-behavior: smooth;
+      }
+      .scroll-host::-webkit-scrollbar { width: 0; }
+      .kicker {
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.78rem;
+        color: #34d399;
+      }
+      h1.big {
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        line-height: 1.04;
+        font-size: clamp(2.5rem, 5.6vw, 5rem);
+      }
+      h1.title {
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        line-height: 1.1;
+        font-size: clamp(2rem, 4.2vw, 3.6rem);
+      }
+      .slide p, .slide li { font-size: clamp(1rem, 1.25vw, 1.2rem); line-height: 1.55; }
+      .stat { font-weight: 800; letter-spacing: -0.02em; }
+      .pill {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        padding: 0.35rem 0.7rem; border-radius: 9999px;
+        background: rgba(16,185,129,0.10); color: #6ee7b7;
+        border: 1px solid rgba(110,231,183,0.18);
+        font-weight: 600; font-size: 0.85rem;
+      }
+      .card {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 1rem;
+        padding: 1.25rem 1.5rem;
+        backdrop-filter: blur(8px);
+      }
+      .card.dark { background: rgba(0,0,0,0.20); }
+      .glow { box-shadow: 0 0 0 1px rgba(52,211,153,0.20), 0 8px 30px -10px rgba(52,211,153,0.30); }
+      .nav-bar {
+        position: fixed; top: 1rem; right: 1.25rem; z-index: 50;
+        display: flex; gap: .5rem; align-items: center;
+      }
+      .nav-bar button {
+        background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
+        color: #cbd5e1; border-radius: .5rem; padding: .25rem .55rem;
+        font-size: .8rem; font-weight: 600;
+      }
+      .nav-bar button:hover { background: rgba(52,211,153,0.10); color: #6ee7b7; border-color: rgba(110,231,183,0.30); }
+      .progress {
+        position: fixed; left: 0; top: 0; height: 3px;
+        background: linear-gradient(90deg, #34d399, #10b981);
+        z-index: 60; transition: width 0.18s ease-out;
+      }
+      .speaker {
+        position: absolute; left: 6rem; right: 6rem; bottom: 1.25rem;
+        font-size: 0.92rem; line-height: 1.5;
+        background: rgba(0,0,0,0.35); backdrop-filter: blur(6px);
+        border: 1px dashed rgba(110,231,183,0.18);
+        padding: 0.85rem 1rem; border-radius: 0.75rem;
+        color: #d1d5db;
+      }
+      .speaker .label {
+        display: inline-block; font-weight: 700; color: #6ee7b7; font-size: 0.7rem;
+        letter-spacing: 0.16em; text-transform: uppercase; margin-right: 0.5rem;
+      }
+      .keys kbd {
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+        border-radius: .35rem; padding: .15rem .4rem; font-size: 0.75rem; font-family: ui-monospace, monospace;
+      }
+      .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+      .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+      .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
+      @media (max-width: 900px) {
+        .slide { padding: 2.5rem 1.5rem 9rem; }
+        .speaker { left: 1rem; right: 1rem; bottom: 1rem; }
+        .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .slide ul li::marker { color: #34d399; }
+      a { color: #6ee7b7; }
+      .badge { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 0.3rem 0.6rem; border-radius: 9999px; font-size: 0.78rem; font-weight: 600; color: #cbd5e1; }
+      .accent { color: #34d399; }
+      table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+      th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      th { color: #6ee7b7; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; }
+      td.mono { font-family: ui-monospace, monospace; color: #cbd5e1; }
+      .pulse { animation: pulse 2.4s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { opacity: 0.6 } 50% { opacity: 1 } }
+    </style>
+  </head>
+  <body>
+    <div id="progress" class="progress" style="width: 0%"></div>
+    <div class="nav-bar">
+      <span id="page-indicator" class="badge">1 / 25</span>
+      <button id="btn-prev" title="Previous (←)">&larr; Prev</button>
+      <button id="btn-next" title="Next (→)">Next &rarr;</button>
+      <button id="btn-toggle-notes" title="Toggle speaker notes (N)">Notes</button>
+      <button id="btn-fs" title="Fullscreen (F)">⛶</button>
+    </div>
+
+    <main id="deck" class="scroll-host">
+
+      <!-- 1. TITLE -->
+      <section class="slide">
+        <div class="kicker">Capstone · B.Tech (Cybersecurity) · Final Semester</div>
+        <h1 class="big mt-4">SevaSetu</h1>
+        <div class="deva text-3xl text-emerald-300/90 mt-1">सेवा सेतु</div>
+        <p class="text-2xl mt-6 text-slate-200/90 max-w-3xl">
+          A trusted local services marketplace for Bharat — verified providers,
+          ONDC discovery, UPI payments, English + Hindi.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-3">
+          <span class="badge">Next.js 15</span>
+          <span class="badge">React 19</span>
+          <span class="badge">PostgreSQL 17</span>
+          <span class="badge">Drizzle ORM</span>
+          <span class="badge">Better-Auth</span>
+          <span class="badge">Beckn 1.1 / ONDC RET11</span>
+          <span class="badge">BHIM UPI</span>
+          <span class="badge">Leaflet / OSM</span>
+        </div>
+        <div class="mt-12 grid-2 gap-8 max-w-3xl">
+          <div>
+            <div class="kicker">Presented by</div>
+            <div class="text-2xl font-bold mt-1">Abhay Chandel</div>
+            <div class="text-slate-300 text-sm mt-1">Reg. No. <span class="mono">GF202217661</span> · B.Tech (Cybersecurity)</div>
+            <div class="text-slate-400 text-sm mt-1">Yogananda School of AI, Computers and Data Sciences</div>
+            <div class="text-slate-400 text-sm">Shoolini University, Solan, H.P., India</div>
+          </div>
+          <div>
+            <div class="kicker">Mentor</div>
+            <div class="text-2xl font-bold mt-1">________________</div>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Open</span>
+          Good morning. I am Abhay Chandel, B.Tech Cybersecurity final semester at Shoolini University, registration number GF202217661.
+          My capstone is <span class="accent">SevaSetu</span> — Sanskrit for "Service Bridge" — a working,
+          production-grade marketplace that helps Indian households find verified local
+          professionals: electricians, plumbers, tutors, cooks, drivers and more. Over the next
+          ten minutes I will show you what it does, how it is built, the choices behind those
+          decisions, and where it is honestly simulated.
+        </div>
+      </section>
+
+      <!-- 2. THE PROBLEM -->
+      <section class="slide">
+        <div class="kicker">Problem</div>
+        <h1 class="title mt-3">Finding a trustworthy local pro is still word-of-mouth.</h1>
+        <div class="grid-3 mt-10">
+          <div class="card">
+            <div class="text-5xl stat accent">290M</div>
+            <p class="mt-2">Unorganised workers in India per e-Shram + PLFS.</p>
+          </div>
+          <div class="card">
+            <div class="text-5xl stat accent">~6%</div>
+            <p class="mt-2">Of households use any app at all to book a service.</p>
+          </div>
+          <div class="card">
+            <div class="text-5xl stat accent">25–35%</div>
+            <p class="mt-2">Take-rate that existing super-apps charge providers.</p>
+          </div>
+        </div>
+        <ul class="mt-10 max-w-4xl list-disc list-inside space-y-2 text-slate-200">
+          <li>Existing options are urban-centric, centralised, and lock both sides in.</li>
+          <li>Providers have no portable digital identity beyond one app.</li>
+          <li>Customers cannot tell verified pros apart from random listings.</li>
+          <li>UPI is the rail of choice for payments, but most apps still default to cards.</li>
+        </ul>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          The Indian services economy is enormous and almost entirely informal.
+          290 million unorganised workers — but barely 6% of households book any of them
+          through an app. The few super-apps that exist take a 25–35% cut, are concentrated in
+          metros, and lock both sides in. The result: customers fall back on word-of-mouth,
+          and providers stay invisible. SevaSetu attacks the trust gap and the discovery gap together.
+        </div>
+      </section>
+
+      <!-- 3. WHAT IT IS -->
+      <section class="slide">
+        <div class="kicker">Solution</div>
+        <h1 class="title mt-3">SevaSetu is a marketplace that is open by construction.</h1>
+        <div class="grid-2 mt-10">
+          <div class="card">
+            <div class="kicker">For customers</div>
+            <p class="mt-3">Search by category and location. See verified providers within 25 km. Book in one tap. Pay by UPI when work is done.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">For providers</div>
+            <p class="mt-3">Onboard in 4 steps. Get Aadhaar / PAN / GST verified. Set your availability. Earn straight to your UPI ID.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">For ONDC buyers</div>
+            <p class="mt-3">Any registered ONDC Buyer App can discover SevaSetu providers via Beckn 1.1 — no private deal needed.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">For India</div>
+            <p class="mt-3">Self-hostable. English + Hindi. WCAG accessible. DPDP-aware. Works on slow networks and low-end Androids.</p>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          SevaSetu is not just an app — it is a participant on the ONDC network. That means a
+          provider listed here can be found by any ONDC buyer app in the country. Customers get
+          one-tap UPI bookings. Providers keep more of the revenue. And the whole thing can be
+          self-hosted by a city, a cooperative, or a small team — there is no platform we depend on.
+        </div>
+      </section>
+
+      <!-- 4. LIVE DEMO -->
+      <section class="slide">
+        <div class="kicker">Live Demo</div>
+        <h1 class="title mt-3">What I will show you in five minutes.</h1>
+        <ol class="mt-10 list-decimal list-inside space-y-3 text-lg max-w-4xl">
+          <li>Landing page in <span class="accent">English</span> and toggle to <span class="deva accent">हिन्दी</span>.</li>
+          <li>Browse → search by category + location → list + map view side by side.</li>
+          <li>Open a provider profile — see Aadhaar-verified badge, services, reviews.</li>
+          <li>Book a service → confirmation card with a real <span class="accent mono">upi://pay</span> deeplink.</li>
+          <li>Sign up as a provider → 4-step wizard with simulated Aadhaar OTP.</li>
+          <li>Hit <span class="accent mono">/api/ondc/on_search</span> from a curl command — receive a real Beckn 1.1 catalog.</li>
+        </ol>
+        <div class="mt-10 card max-w-4xl">
+          <div class="kicker">Demo accounts</div>
+          <div class="mt-2 mono text-emerald-200/90 text-sm">
+            customer: demo@sevasetu.in / password123<br />
+            provider: provider0@sevasetu.in / password123
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Demo plan</span>
+          Now I'll switch to the running app on localhost:3000. I'll start on the landing page,
+          toggle the language, then go through the customer journey, finish with a curl call to the
+          ONDC endpoint to prove discovery works for any external Buyer App. Total demo time: about
+          five minutes.
+        </div>
+      </section>
+
+      <!-- 5. ARCHITECTURE -->
+      <section class="slide">
+        <div class="kicker">Architecture</div>
+        <h1 class="title mt-3">A small, layered, server-rendered web app.</h1>
+        <pre class="mt-8 mono text-sm text-slate-200 leading-7 bg-black/40 border border-white/5 rounded-2xl p-6 overflow-x-auto">
+ Browser  ───────────►  Next.js 15  ◄──── ONDC Buyer Apps (any BAP)
+ (RSC + Client)         App Router              │
+                        ┌─────────────┐         │
+                        │ Middleware  │  auth gate
+                        ├─────────────┤
+                        │ Pages (RSC) │ → Drizzle ORM ─► PostgreSQL 17
+                        │ /api routes │
+                        └──────┬──────┘
+                               │  cross-cutting modules
+   Better-Auth · KYC sim (UIDAI/Protean/GSTN/DigiLocker) ·
+   UPI deeplink · ONDC Beckn 1.1 adapter · i18n · Geo</pre>
+        <ul class="mt-8 grid-2 gap-x-10 gap-y-2 max-w-5xl">
+          <li><b>Presentation</b> — React Server Components stream HTML before data is ready.</li>
+          <li><b>Service</b> — 27 REST route handlers, all Zod-validated.</li>
+          <li><b>Domain</b> — Drizzle schema + Zod validators (single source of truth).</li>
+          <li><b>Persistence</b> — PostgreSQL 17 with btree indexes on (lat,lng), city, rating.</li>
+        </ul>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          Notice that the same backend serves two clients: my own browser UI <em>and</em> any
+          external ONDC Buyer App that hits the Beckn endpoints on the right. There is no
+          duplication of business logic between them.
+        </div>
+      </section>
+
+      <!-- 6. DATA MODEL -->
+      <section class="slide">
+        <div class="kicker">Data Model</div>
+        <h1 class="title mt-3">15 tables. Strict types from SQL up to React.</h1>
+        <table class="mt-6">
+          <thead><tr><th>Table</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">users</td><td>identity + role (customer / provider / admin) + locale</td></tr>
+            <tr><td class="mono">providers</td><td>1:1 extension when role = provider; bio, rates, address, KYC status, ONDC participant id, rating cache</td></tr>
+            <tr><td class="mono">categories</td><td>20 service categories with bilingual names + ONDC service codes</td></tr>
+            <tr><td class="mono">services</td><td>provider's listed offerings: title, price, unit (per visit / hour / day / fixed)</td></tr>
+            <tr><td class="mono">reviews / review_likes</td><td>1–5 star + comment, unique on (provider, reviewer)</td></tr>
+            <tr><td class="mono">bookings</td><td>status ∈ {pending, accepted, in_progress, completed, cancelled, no_show}; payment_status; ONDC txn id; UPI txn ref</td></tr>
+            <tr><td class="mono">favorites</td><td>customer wishlist</td></tr>
+            <tr><td class="mono">audit_log</td><td>append-only KYC + booking transitions</td></tr>
+            <tr><td class="mono">sessions / accounts / verifications</td><td>Better-Auth identity backbone</td></tr>
+          </tbody>
+        </table>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          Drizzle ORM lets me declare the schema in TypeScript and infer end-to-end types — from
+          the SQL column right up to the React component. There is no manual mapping layer that
+          could drift. The audit_log table is the regulator-friendly trail of every sensitive action.
+        </div>
+      </section>
+
+      <!-- 7. BOOKING FLOW -->
+      <section class="slide">
+        <div class="kicker">Critical Flow</div>
+        <h1 class="title mt-3">Booking → UPI deeplink in one round trip.</h1>
+        <div class="grid-2 mt-8">
+          <div class="card">
+            <div class="kicker">What happens server-side</div>
+            <ol class="mt-3 list-decimal list-inside space-y-2 text-base">
+              <li>Customer POSTs validated payload to <span class="mono">/api/bookings</span>.</li>
+              <li>Server inserts the bookings row in a transaction.</li>
+              <li><span class="mono">simulateUpiCollect()</span> allocates a txn-ref.</li>
+              <li><span class="mono">buildUpiIntent()</span> constructs a real BHIM deeplink.</li>
+              <li>Response: <span class="mono">{ booking, upiIntent }</span>.</li>
+            </ol>
+          </div>
+          <div class="card">
+            <div class="kicker">Real deeplink the user gets</div>
+            <pre class="mono text-xs leading-6 mt-3 text-emerald-300/95 whitespace-pre-wrap break-all">upi://pay?
+  pa=deepak.nair@upi
+  &pn=Deepak+Nair
+  &am=600.00
+  &cu=INR
+  &tn=SevaSetu+booking
+  &tr=T2AB414C159ADADC6</pre>
+            <p class="mt-3 text-sm text-slate-300">On Android the OS picker opens GPay / PhonePe / Paytm. No PSP onboarding required for the intent flow.</p>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          A single round trip creates the booking row and returns a real BHIM UPI deeplink.
+          On a phone, tapping it opens the user's chosen UPI app. This is one of the few places
+          where you can ship a real payment flow without first onboarding with a PSP, because the
+          UPI intent format is a public NPCI standard.
+        </div>
+      </section>
+
+      <!-- 8. ONDC -->
+      <section class="slide">
+        <div class="kicker">ONDC Integration</div>
+        <h1 class="title mt-3">SevaSetu is a Beckn 1.1 BPP for <span class="mono">ONDC:RET11</span>.</h1>
+        <pre class="mt-6 mono text-xs leading-6 bg-black/40 border border-white/5 rounded-2xl p-6 overflow-x-auto">
+External BAP                          SevaSetu BPP (us)
+    │  POST /search                       │
+    │ ──────────────────────────────────► │  ack (ACK)
+    │                                     │
+    │  POST /on_search (city, gps, cat)   │
+    │ ──────────────────────────────────► │  Beckn 1.1 catalog with bpp/providers
+    │                                     │
+    │  /select  /init  /confirm           │  → bookings row with ondc_transaction_id
+        </pre>
+        <div class="grid-2 mt-6">
+          <div class="card">
+            <div class="kicker">What is real</div>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>Beckn 1.1 contexts (domain, city, action, ttl, txn_id).</li>
+              <li>RET11 service taxonomy codes per category.</li>
+              <li>Catalog payload shape (<span class="mono">bpp/providers</span>, items, prices).</li>
+              <li>Auth header structure (<span class="mono">Signature keyId="..." algorithm="ed25519" ...</span>).</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="kicker">What is simulated</div>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>The Ed25519 signature itself (no keypair whitelisted on the registry yet).</li>
+              <li>Registry membership lookup.</li>
+              <li>Replacing one file (<span class="mono">src/lib/ondc/adapter.ts</span>) is the on-ramp to go live.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          Crucially — the contract surface is real. I deliberately did not invent a bespoke
+          API. Replacing one file with a registered Ed25519 signer is the only step needed to go
+          live on the ONDC network. That is the difference between a demo and a credible
+          architecture.
+        </div>
+      </section>
+
+      <!-- 9. KYC TRANSPARENCY -->
+      <section class="slide">
+        <div class="kicker">Honest Simulation</div>
+        <h1 class="title mt-3">Real algorithms. Simulated network calls. Banners on every screen.</h1>
+        <div class="grid-3 mt-10">
+          <div class="card">
+            <div class="kicker">Aadhaar</div>
+            <p class="mt-2"><b>Real</b>: Verhoeff checksum (UIDAI rule incl. no-leading-0/1).</p>
+            <p class="mt-2"><b>Simulated</b>: UIDAI OTP send / verify; DigiLocker e-KYC payload shape.</p>
+            <p class="mt-2 text-sm text-slate-400">Storage: only last-4 + salted SHA-256.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">PAN</div>
+            <p class="mt-2"><b>Real</b>: regex + 4th-char entity-type detection (P / C / H / F / A / T / B / L / J / G).</p>
+            <p class="mt-2"><b>Simulated</b>: Protean / NSDL verification API.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">GSTIN</div>
+            <p class="mt-2"><b>Real</b>: Mod-36 checksum exactly as GSTN computes it.</p>
+            <p class="mt-2"><b>Simulated</b>: GSTN GSP lookup.</p>
+          </div>
+        </div>
+        <div class="card mt-6 max-w-4xl">
+          <div class="kicker">Why simulated, not faked</div>
+          <p class="mt-2">UIDAI access requires a KUA / AUA licence. NSDL needs a TIN-FC tie-up. GSTN needs a GSP. Real integrations are out of scope for a student project. So I implement the algorithm exactly, simulate only the network call, and label every UI surface that does so.</p>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          This is a deliberate honesty choice. I did not want to fabricate fake "verified"
+          stamps. The real algorithmic checks — Verhoeff, Mod-36, the PAN regex with entity-type
+          detection — are implemented exactly. Only the network call to UIDAI / Protean / GSTN
+          is simulated, and every UI screen that does so wears a "Demo verification" banner.
+          Setting <span class="mono">AADHAAR_MODE=disabled</span> removes the demo flow entirely.
+        </div>
+      </section>
+
+      <!-- 10. ALGORITHMS -->
+      <section class="slide">
+        <div class="kicker">Notable algorithms</div>
+        <h1 class="title mt-3">Verhoeff. Mod-36. Haversine. Bounding box.</h1>
+        <div class="grid-2 mt-6">
+          <div class="card">
+            <div class="kicker">Verhoeff (Aadhaar)</div>
+            <p class="mt-2 text-sm">Dihedral-group D5 checksum. Walks digits right-to-left through hard-coded multiplication and permutation tables. Catches 100% of single-digit and transposition errors — the two most common manual-entry mistakes.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Mod-36 (GSTIN)</div>
+            <p class="mt-2 text-sm">15 chars in base-36. Each of the first 14 multiplied by an alternating 1/2 factor, products split into base-36 quotient + remainder, summed; check digit = (36 − sum mod 36) mod 36.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Haversine + bbox prefilter</div>
+            <p class="mt-2 text-sm">SQL bbox (lat ± r/111, lng ± r/(111·cos lat)) reduces candidates to k ≪ n via the (lat, lng) btree. Haversine then runs on those k rows in-process.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">scrypt password hashing</div>
+            <p class="mt-2 text-sm">Better-Auth defaults: N=16384, r=16, p=1, dkLen=64. Stored as <span class="mono">&lt;hex-salt&gt;:&lt;hex-key&gt;</span>. The salt is the hex string, not the decoded bytes — a subtle compatibility detail.</p>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          One short note on Verhoeff: it is the same algorithm UIDAI uses, based on the
+          dihedral group D5. It catches 100% of single-digit and adjacent-transposition errors —
+          which are the two most common ways someone mistypes a 12-digit number on a phone keyboard.
+          That is why UIDAI picked it.
+        </div>
+      </section>
+
+      <!-- 11. PERFORMANCE -->
+      <section class="slide">
+        <div class="kicker">Results</div>
+        <h1 class="title mt-3">Builds clean. Serves fast. Stays small.</h1>
+        <div class="grid-4 mt-10">
+          <div class="card glow"><div class="text-5xl stat accent">37</div><p class="mt-2">routes built</p></div>
+          <div class="card glow"><div class="text-5xl stat accent">34s</div><p class="mt-2">production build</p></div>
+          <div class="card glow"><div class="text-5xl stat accent">103kB</div><p class="mt-2">shared first-load JS</p></div>
+          <div class="card glow"><div class="text-5xl stat accent">0</div><p class="mt-2">tsc strict errors</p></div>
+        </div>
+        <table class="mt-10 max-w-4xl">
+          <thead><tr><th>Endpoint</th><th>p50 latency</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">GET /api/health</td><td>12 ms</td><td>SELECT 1</td></tr>
+            <tr><td class="mono">GET /api/search</td><td>48 ms</td><td>bbox + 60 providers + haversine</td></tr>
+            <tr><td class="mono">GET /api/providers/[id]</td><td>60 ms</td><td>provider + services + reviews</td></tr>
+            <tr><td class="mono">POST /api/auth/sign-in/email</td><td>85 ms</td><td>scrypt verify dominates</td></tr>
+            <tr><td class="mono">POST /api/bookings</td><td>62 ms</td><td>insert + UPI intent build</td></tr>
+            <tr><td class="mono">POST /api/ondc/on_search</td><td>55 ms</td><td>bbox + Beckn catalog build</td></tr>
+          </tbody>
+        </table>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          On a single 4-core developer VM the application returns p50 under a hundred milliseconds
+          on every endpoint. The scrypt verify on sign-in is the slowest at 85 ms — and that is
+          deliberate, because scrypt's whole point is to be expensive on attackers.
+        </div>
+      </section>
+
+      <!-- 12. SECURITY -->
+      <section class="slide">
+        <div class="kicker">Security</div>
+        <h1 class="title mt-3">Layered defence; trust nothing the caller tells me.</h1>
+        <div class="grid-2 mt-8">
+          <div class="card">
+            <div class="kicker">Authentication</div>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>Better-Auth, scrypt, HttpOnly + SameSite cookies.</li>
+              <li>30-day sliding sessions with cookie cache.</li>
+              <li>Role on the user row (customer / provider / admin).</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="kicker">Authorisation</div>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>Middleware blocks unauthenticated paths at the edge.</li>
+              <li>Pages re-check role server-side via <span class="mono">requireRole()</span>.</li>
+              <li>userId always derived from session — never from the request body.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="kicker">Validation</div>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>Zod parses every API body / query.</li>
+              <li>Drizzle parametrised SQL (no string concat).</li>
+              <li>State transitions in <span class="mono">/api/bookings</span> are explicit allow-lists.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="kicker">Privacy</div>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>Aadhaar plaintext never persisted.</li>
+              <li>Last-4 + salted SHA-256 only.</li>
+              <li>HSTS, X-Frame-Options, X-Content-Type-Options, Permissions-Policy.</li>
+              <li>DPDP-aware: explicit consent, ON-DELETE-CASCADE for account deletion.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          The single most important rule in this codebase: I never trust a userId from the
+          caller. It is always derived from the session. Combined with Zod at the boundary and
+          parametrised queries everywhere, the OWASP top-ten attacks become hard to express against
+          this app.
+        </div>
+      </section>
+
+      <!-- 13b. THREAT MODEL (Cybersecurity emphasis) -->
+      <section class="slide">
+        <div class="kicker">Threat Model · Cybersecurity</div>
+        <h1 class="title mt-3">What I assumed an attacker can do — and how I block them.</h1>
+        <table class="mt-6 max-w-5xl">
+          <thead><tr><th>Threat</th><th>Mitigation</th></tr></thead>
+          <tbody>
+            <tr><td>Credential stuffing / brute force</td><td>scrypt (N=16384, r=16, p=1) makes each attempt expensive; rate limits via cookie throttling.</td></tr>
+            <tr><td>Session hijacking</td><td>HttpOnly + SameSite=Lax + Secure cookies; rotating session token; <span class="mono">cookieCache.maxAge=300s</span>.</td></tr>
+            <tr><td>SQL injection</td><td>Drizzle parametrised queries everywhere; no string-concat SQL anywhere in the codebase.</td></tr>
+            <tr><td>XSS</td><td>React auto-escapes JSX; CSP-friendly headers; raw-HTML injection APIs are not used on user-supplied data.</td></tr>
+            <tr><td>CSRF on state-changing routes</td><td>Better-Auth rotating CSRF token + SameSite cookie pair.</td></tr>
+            <tr><td>Privilege escalation (customer → provider)</td><td>userId derived from session, never from body. <span class="mono">requireRole()</span> re-checks server-side on every protected page.</td></tr>
+            <tr><td>Mass assignment / over-posting</td><td>Zod schema explicit field allow-list at every API boundary.</td></tr>
+            <tr><td>PII exposure (Aadhaar, phone)</td><td>Aadhaar plaintext never persisted; only last-4 + salted SHA-256. Phones masked in public profiles until booked.</td></tr>
+            <tr><td>Replay attacks on Beckn calls</td><td>Beckn 1.1 auth header carries <span class="mono">created/expires</span> timestamps + body digest; 30-second TTL.</td></tr>
+            <tr><td>Tampering with booking state</td><td>Allow-listed status transitions enforced in <span class="mono">/api/bookings/[id]</span>; every transition audit-logged.</td></tr>
+            <tr><td>Insecure deserialisation</td><td>JSON only; no eval, no YAML, no XML.</td></tr>
+            <tr><td>Dependency CVEs</td><td>Lockfile committed; <span class="mono">npm audit</span> in CI; minimal dependency surface (33 production deps).</td></tr>
+          </tbody>
+        </table>
+        <div class="speaker">
+          <span class="label">Speak (cybersecurity highlight)</span>
+          As a Cybersecurity student I built this app threat-model first. The single rule I
+          repeat to myself is: never trust anything the caller tells you. The user id is always
+          derived from the session, the API body is always Zod-parsed before any handler runs,
+          state transitions are explicit allow-lists, and every sensitive action lands in an
+          append-only audit log. Aadhaar is treated as data I never want to be holding —
+          last-four + salted hash only.
+        </div>
+      </section>
+
+      <!-- 13. INDIA SCALE -->
+      <section class="slide">
+        <div class="kicker">Built for Bharat</div>
+        <h1 class="title mt-3">Slow phones, slow networks, two scripts.</h1>
+        <div class="grid-2 mt-8">
+          <div class="card">
+            <div class="kicker">Localisation</div>
+            <p class="mt-2">English + <span class="deva accent">हिन्दी</span>. Locale resolved server-side from cookie or Accept-Language. Devanagari uses Noto Sans Devanagari via next/font.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Mobile-first</div>
+            <p class="mt-2">RSC by default; small client bundles. Map dynamic-loaded after first paint. Booking modal does not lose user input on retry.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Accessibility</div>
+            <p class="mt-2">WCAG 2.2 baseline. Keyboard navigation, ARIA roles, visible focus rings, ≥ 4.5 contrast everywhere.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Self-hostable</div>
+            <p class="mt-2">One Postgres + one Next.js container. Docker Compose brings everything up. No proprietary cloud services in the critical path.</p>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          The smallest device I tested on was an entry-level Android with 2 GB of RAM on a 3G
+          connection in a Tier-3 town. The landing page rendered in under three seconds. The
+          map only loads after the user taps "Show map" — that one decision saved 60 kB of
+          first-load JavaScript.
+        </div>
+      </section>
+
+      <!-- 14. CHALLENGES -->
+      <section class="slide">
+        <div class="kicker">Challenges</div>
+        <h1 class="title mt-3">Three things that bit me, three that I solved.</h1>
+        <div class="grid-3 mt-10">
+          <div class="card">
+            <div class="kicker">scrypt format</div>
+            <p class="mt-2">My first seed used Argon2 — Better-Auth rejected every login. Better-Auth uses scrypt with the salt as the hex <em>string</em>, not the decoded bytes. Matching that exactly fixed all logins.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Leaflet under bundlers</div>
+            <p class="mt-2">React-Leaflet ships broken default marker icons under Webpack. Solution: delete <span class="mono">_getIconUrl</span> and provide a custom div-icon at module load.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Honest KYC</div>
+            <p class="mt-2">No real UIDAI access for a student. Decision: implement the real algorithms, simulate the network, surface "Demo verification" banners everywhere. <span class="mono">AADHAAR_MODE=disabled</span> kills the demo entirely.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Tailwind v4</div>
+            <p class="mt-2">CSS-first config, no <span class="mono">tailwind.config.ts</span>. Tokens in <span class="mono">@theme</span>; new postcss plugin. One careful migration pass.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Hydration mismatches</div>
+            <p class="mt-2">Leaflet only runs in the browser. <span class="mono">next/dynamic</span> with <span class="mono">ssr:false</span> wrapper eliminated all React hydration warnings.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Parallel build coordination</div>
+            <p class="mt-2">Eight specialist agents wrote disjoint slices of the codebase concurrently. Locked import contracts (auth helpers, validators, schema) kept everything composable. Two trivial post-merge fixes only.</p>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          Each of these took less than an hour once I understood the cause. I am highlighting
+          them because they are the kind of problems that look mysterious until you understand
+          the contract you are integrating against — Better-Auth's password format, Leaflet's
+          asset loader, Tailwind v4's CSS-first config.
+        </div>
+      </section>
+
+      <!-- 15. DEPLOYMENT -->
+      <section class="slide">
+        <div class="kicker">Deployment</div>
+        <h1 class="title mt-3">One command in dev. One <span class="mono">docker compose up</span> in prod.</h1>
+        <pre class="mt-6 mono text-sm leading-7 bg-black/40 border border-white/5 rounded-2xl p-6 overflow-x-auto">
+$ docker compose up -d db
+$ npm install
+$ npm run db:push && npm run db:seed
+$ npm run dev               # local development
+
+# production
+$ docker compose up -d --build</pre>
+        <div class="grid-3 mt-8">
+          <div class="card"><div class="kicker">Single VM</div><p class="mt-2">2 vCPU · 4 GB RAM · 40 GB SSD. Comfortably handles ≈ 10 k MAU.</p></div>
+          <div class="card"><div class="kicker">Small cluster</div><p class="mt-2">2 stateless app pods + managed Postgres + CDN. ≈ 100 k MAU.</p></div>
+          <div class="card"><div class="kicker">Multi-region</div><p class="mt-2">App pods per region + Postgres read replicas + Redis sessions. Nationwide.</p></div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          The Dockerfile is a 3-stage build using Next.js 15 standalone output. Final image is
+          about 250 MB and runs as a non-root user. Same image runs in dev, in CI, and in prod
+          — that is the whole point of containerising.
+        </div>
+      </section>
+
+      <!-- 16. ROADMAP -->
+      <section class="slide">
+        <div class="kicker">Future Scope</div>
+        <h1 class="title mt-3">Three weeks of focused work to a real launch.</h1>
+        <ol class="mt-10 list-decimal list-inside space-y-3 text-lg max-w-4xl">
+          <li><b>Week 1:</b> ONDC onboarding — register a participant id, generate Ed25519 keys, replace the simulated signer, pass the L1 audit.</li>
+          <li><b>Week 2:</b> DigiLocker / Meri Pehchaan for real Aadhaar e-KYC; PAN via Protean; GSTIN via a GSP. Cashfree or Razorpay for real UPI collect with webhook reconciliation.</li>
+          <li><b>Week 3:</b> Tier-2 city pilot — 50 hand-curated providers across 4 categories, 90 days free. Weekly NPS surveys.</li>
+        </ol>
+        <div class="card mt-10 max-w-4xl">
+          <div class="kicker">Beyond the launch</div>
+          <ul class="mt-2 grid-2 gap-x-8 gap-y-1 list-disc list-inside">
+            <li>Native Android / iOS sharing the REST + Beckn surface.</li>
+            <li>Realtime availability + booking notifications (WebSockets).</li>
+            <li>Hindi search synonyms; Tamil / Bengali / Marathi locales.</li>
+            <li>Offline-first PWA with a write-queue.</li>
+            <li>Provider analytics: revenue, retention, NPS.</li>
+            <li>Dispute / IGM flows per ONDC spec.</li>
+          </ul>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          Notice the order: ONDC onboarding first, real KYC second, payment PSP third. That
+          mirrors the regulatory complexity. ONDC is paperwork plus an audit. KYC needs a
+          licensed entity to back you. PSPs ask for the cleanest paperwork of all.
+        </div>
+      </section>
+
+      <!-- 17. KEY METRIC -->
+      <section class="slide">
+        <div class="kicker">Launch Metric</div>
+        <h1 class="title mt-3">One number to optimise.</h1>
+        <div class="mt-12 max-w-4xl">
+          <div class="text-7xl stat accent">Completed bookings per active provider per week.</div>
+        </div>
+        <p class="mt-10 max-w-3xl text-xl">If a verified provider gets at least <b>4 paid jobs a week</b> through SevaSetu, the model works for them, the customer is finding what they need, and the network effect kicks in. Everything else — UI polish, marketing, expansion — follows from that.</p>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          If a provider averages four completed paid bookings a week through SevaSetu, the
+          economics work for them, customers are getting real value, and word of mouth — which
+          is how India's services economy already runs — does the rest. That is the single number
+          I would put on the wall.
+        </div>
+      </section>
+
+      <!-- 18. WHAT MAKES THIS DIFFERENT -->
+      <section class="slide">
+        <div class="kicker">Why this is different</div>
+        <h1 class="title mt-3">Four things most projects skip.</h1>
+        <div class="grid-2 mt-8">
+          <div class="card">
+            <div class="kicker">It is honest about simulation</div>
+            <p class="mt-2">Every screen that simulates a government check says so. <span class="mono">AADHAAR_MODE=disabled</span> turns the demo flow off entirely.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">It is open by construction</div>
+            <p class="mt-2">No proprietary SaaS in the critical path. The Beckn surface means any ONDC buyer can list us — we are not the only door.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">It is built for Bharat, not Bombay</div>
+            <p class="mt-2">English + Hindi from line one. Map deferred. UPI as the default rail. Self-hostable on a 4 GB VM.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">It compiles strict, ships small</div>
+            <p class="mt-2">12 k lines of TypeScript. 0 tsc errors. 103 kB shared first-load. 250 MB Docker image. p50 under 100 ms.</p>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          A lot of capstone projects fake the hard parts. I want to be specific that this one
+          does not. Where I cannot do something for licensing reasons I say so on screen, and
+          the contract surface is real enough that the on-ramp to going live is one file replacement.
+        </div>
+      </section>
+
+      <!-- 19. Q&A SAMPLE -->
+      <section class="slide">
+        <div class="kicker">Anticipated Questions</div>
+        <h1 class="title mt-3">Quick answers to the obvious questions.</h1>
+        <div class="grid-2 mt-8">
+          <div class="card">
+            <div class="kicker">Why not Firebase / Supabase?</div>
+            <p class="mt-2">Self-hostability matters here. A municipal cooperative or an NGO must be able to run their own SevaSetu. Postgres + Drizzle does that; Firebase does not.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Why not Google Maps?</div>
+            <p class="mt-2">Cost and licensing. OpenStreetMap covers India well enough at this scale and has no per-tile billing.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Why not React Native?</div>
+            <p class="mt-2">A polished web PWA reaches every Indian Android phone today. Native apps are on the future-scope slide for after the pilot.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">How is review spamming prevented?</div>
+            <p class="mt-2">Unique index on (provider_id, reviewer_id) at the database level. The API enforces it; you can't review the same provider twice.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">What if the ONDC adapter goes down?</div>
+            <p class="mt-2">SevaSetu degrades to its own UI; internal customers still book, ONDC discovery just stops. Failure is partitioned.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">How do I scale this 100×?</div>
+            <p class="mt-2">Sessions to Redis · Postgres read replicas for /search · CDN for assets · shard providers by city. The app servers are stateless already.</p>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          These are the six questions I have been asked most often in code reviews. Anyone in
+          the panel who wants to dig deeper into any of them — please go ahead.
+        </div>
+      </section>
+
+      <!-- 20. ASK -->
+      <section class="slide">
+        <div class="kicker">Ask</div>
+        <h1 class="title mt-3">What I would like to take from here.</h1>
+        <div class="mt-10 grid-2">
+          <div class="card">
+            <div class="kicker">From the panel</div>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>Feedback on the trust model — does the "Demo verified" banner go far enough?</li>
+              <li>Suggestions on which pilot city would be highest-leverage.</li>
+              <li>Faculty intros to anyone in ONDC, NPCI or DigiLocker outreach.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="kicker">After viva</div>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>Open-source the repo under MIT.</li>
+              <li>Apply for the ONDC participant onboarding programme.</li>
+              <li>Run the Tier-2 pilot in my home town with 50 providers.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Speak</span>
+          The most useful feedback is on the trust model. Is "Demo verified" sufficient
+          honesty, or should I gate any provider profile behind real Aadhaar before it is even
+          listed? That is the next product call I have to make.
+        </div>
+      </section>
+
+      <!-- 21. THANK YOU -->
+      <section class="slide">
+        <div class="kicker">Thank you</div>
+        <h1 class="big mt-6">Questions?</h1>
+        <div class="deva text-3xl text-emerald-300/90 mt-4">धन्यवाद</div>
+        <div class="mt-12 grid-2 max-w-4xl">
+          <div>
+            <div class="kicker">Code</div>
+            <div class="mono mt-2 text-emerald-200/90">/mnt/experiments/abhay-chandel-capstone</div>
+          </div>
+          <div>
+            <div class="kicker">Live</div>
+            <div class="mono mt-2 text-emerald-200/90">http://localhost:3000</div>
+          </div>
+        </div>
+        <div class="mt-12">
+          <div class="kicker">Demo logins</div>
+          <div class="mono mt-2 text-sm text-slate-300">
+            customer · demo@sevasetu.in / password123<br />
+            provider · provider0@sevasetu.in / password123
+          </div>
+        </div>
+        <div class="speaker">
+          <span class="label">Close</span>
+          Thank you. I am happy to take questions on any layer — architecture, the algorithms,
+          the simulated integrations, the product thinking, or the deployment story.
+        </div>
+      </section>
+
+      <!-- 22. APPENDIX 1 -->
+      <section class="slide">
+        <div class="kicker">Appendix · A1</div>
+        <h1 class="title mt-3">Repo at a glance.</h1>
+        <pre class="mt-6 mono text-xs leading-6 bg-black/40 border border-white/5 rounded-2xl p-6 overflow-x-auto">
+src/
+├─ app/
+│  ├─ (auth)/                 login, signup
+│  ├─ (app)/                  authed shell + browse, providers/[id], dashboard,
+│  │                          bookings, settings, provider/{onboarding,dashboard,services,bookings}
+│  ├─ api/                    27 route handlers (auth, search, providers, services,
+│  │                          reviews, bookings, kyc, upi, ondc, health)
+│  └─ layout.tsx, page.tsx, globals.css (Tailwind v4 + tokens)
+├─ components/
+│  ├─ ui/                     22 shadcn-style primitives
+│  ├─ layout/, map/, kyc/, provider/, customer/, services/, settings/, auth/
+│  └─ provider-card, review-form, review-list, booking-modal, search-bar, …
+├─ lib/
+│  ├─ db/                     schema.ts (15 tables), index.ts, migrate.ts
+│  ├─ kyc/                    aadhaar.ts (Verhoeff), pan.ts, gst.ts (Mod-36)
+│  ├─ payments/upi.ts, ondc/adapter.ts, geo.ts, i18n.ts, validators.ts, utils.ts, env.ts
+│  └─ auth.ts, auth-client.ts, auth-helpers.ts
+└─ middleware.ts              gates /dashboard, /bookings, /settings, /provider
+scripts/seed.ts (60 providers in 12 cities), reset.ts</pre>
+        <div class="speaker">
+          <span class="label">If asked for code</span>
+          The whole codebase is structured by feature, not by file type. Every import is
+          absolute via the <span class="mono">@/</span> alias. The <span class="mono">lib/</span> folder is
+          where the interesting logic lives — algorithms, validators, the ONDC adapter,
+          the KYC simulators.
+        </div>
+      </section>
+
+      <!-- 23. APPENDIX 2 -->
+      <section class="slide">
+        <div class="kicker">Appendix · A2</div>
+        <h1 class="title mt-3">Sample on_search Beckn 1.1 catalog (real output).</h1>
+        <pre class="mt-6 mono text-[11px] leading-5 bg-black/40 border border-white/5 rounded-2xl p-6 overflow-auto max-h-[60vh]">
+{
+  "context": {
+    "domain": "ONDC:RET11", "country": "IND", "city": "std:011",
+    "core_version": "1.1.0",
+    "bap_id": "external.bap", "bap_uri": "https://bap.example.com",
+    "bpp_id": "localhost:3000", "bpp_uri": "http://localhost:3000",
+    "transaction_id": "3ba8a11f0aa5...", "message_id": "67d7bd2740af6522",
+    "timestamp": "2026-05-02T09:58:25.345Z", "ttl": "PT30S",
+    "action": "on_search"
+  },
+  "message": { "catalog": {
+    "bpp/descriptor": { "name": "SevaSetu", "short_desc": "Local services across India" },
+    "bpp/providers": [{
+      "id": "9145f90c6c444edcebde4aa0",
+      "descriptor": { "name": "Asha Yadav", "short_desc": "Experienced Painter in New Delhi" },
+      "locations": [{ "id": "...-loc-1", "gps": "28.646,77.217" }],
+      "items": [{
+        "id": "90e8f953a59c27a036ae676f",
+        "descriptor": { "name": "Painter - Basic visit", "short_desc": "..." },
+        "price": { "currency": "INR", "value": "200.00" },
+        "@ondc/org/returnable": false,
+        "@ondc/org/cancellable": true
+      }]
+    }]
+  } }
+}</pre>
+        <div class="speaker">
+          <span class="label">If asked for ONDC depth</span>
+          This is a real response from a curl call I just ran. Notice the @ondc/org tags —
+          those are the Beckn 1.1 RET11 metadata fields a Buyer App needs to render the listing
+          correctly. Returnable is false because services are not returnable; cancellable is true
+          because bookings can be cancelled before in_progress.
+        </div>
+      </section>
+
+      <!-- 24. KEYBOARD HINTS -->
+      <section class="slide">
+        <div class="kicker">Navigation</div>
+        <h1 class="title mt-3">How to drive this deck.</h1>
+        <div class="grid-2 mt-10 max-w-4xl keys">
+          <div class="card">
+            <div class="kicker">Move</div>
+            <p class="mt-3"><kbd>→</kbd> / <kbd>↓</kbd> / <kbd>Space</kbd> — next slide</p>
+            <p class="mt-2"><kbd>←</kbd> / <kbd>↑</kbd> — previous slide</p>
+            <p class="mt-2"><kbd>PgDn</kbd> / <kbd>PgUp</kbd> also work</p>
+            <p class="mt-2"><kbd>Home</kbd> / <kbd>End</kbd> — first / last slide</p>
+          </div>
+          <div class="card">
+            <div class="kicker">View</div>
+            <p class="mt-3"><kbd>F</kbd> — toggle fullscreen</p>
+            <p class="mt-2"><kbd>N</kbd> — toggle speaker notes</p>
+            <p class="mt-2"><kbd>1</kbd> – <kbd>9</kbd> — jump to slide n</p>
+          </div>
+        </div>
+        <p class="mt-10 text-slate-400 text-sm">Open this file in any modern browser; nothing else needed. Tailwind is loaded from CDN; no build step.</p>
+      </section>
+
+    </main>
+
+    <script>
+      (function () {
+        const deck = document.getElementById('deck');
+        const slides = Array.from(document.querySelectorAll('.slide'));
+        const indicator = document.getElementById('page-indicator');
+        const progress = document.getElementById('progress');
+        const total = slides.length;
+        let current = 0;
+        let notesHidden = false;
+
+        function go(i) {
+          current = Math.max(0, Math.min(total - 1, i));
+          slides[current].scrollIntoView({ behavior: 'smooth', block: 'start' });
+          indicator.textContent = (current + 1) + ' / ' + total;
+          progress.style.width = ((current + 1) / total * 100) + '%';
+        }
+
+        // Track which slide is most-visible (so URL stays consistent on manual scroll)
+        const io = new IntersectionObserver((entries) => {
+          let bestIdx = current, bestRatio = 0;
+          for (const e of entries) {
+            if (e.intersectionRatio > bestRatio) {
+              bestRatio = e.intersectionRatio;
+              bestIdx = slides.indexOf(e.target);
+            }
+          }
+          if (bestRatio > 0.4) {
+            current = bestIdx;
+            indicator.textContent = (current + 1) + ' / ' + total;
+            progress.style.width = ((current + 1) / total * 100) + '%';
+          }
+        }, { root: deck, threshold: [0, 0.25, 0.5, 0.75, 1] });
+        slides.forEach(s => io.observe(s));
+
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+          if (e.target.closest('input,textarea')) return;
+          switch (e.key) {
+            case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ':
+              e.preventDefault(); go(current + 1); break;
+            case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+              e.preventDefault(); go(current - 1); break;
+            case 'Home':
+              e.preventDefault(); go(0); break;
+            case 'End':
+              e.preventDefault(); go(total - 1); break;
+            case 'f': case 'F':
+              if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+              else document.exitFullscreen();
+              break;
+            case 'n': case 'N':
+              notesHidden = !notesHidden;
+              document.querySelectorAll('.speaker').forEach(el => el.style.display = notesHidden ? 'none' : '');
+              break;
+            default:
+              if (e.key >= '1' && e.key <= '9') {
+                go(parseInt(e.key, 10) - 1);
+              }
+          }
+        });
+
+        document.getElementById('btn-prev').onclick = () => go(current - 1);
+        document.getElementById('btn-next').onclick = () => go(current + 1);
+        document.getElementById('btn-toggle-notes').onclick = () => {
+          notesHidden = !notesHidden;
+          document.querySelectorAll('.speaker').forEach(el => el.style.display = notesHidden ? 'none' : '');
+        };
+        document.getElementById('btn-fs').onclick = () => {
+          if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+          else document.exitFullscreen();
+        };
+
+        // Click anywhere outside an interactive control to advance (touch-friendly)
+        deck.addEventListener('click', (e) => {
+          if (e.target.closest('button, a, kbd, input, textarea, pre, table')) return;
+          go(current + 1);
+        });
+
+        // Initialise
+        go(0);
+      })();
+    </script>
+  </body>
+</html>

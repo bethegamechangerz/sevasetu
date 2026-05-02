@@ -1,0 +1,82 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-cloud-run
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud (Workload Identity Federation)
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: dmjone
+          workload_identity_provider: projects/107722137045/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          service_account: sevasetu-deployer@dmjone.iam.gserviceaccount.com
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: dmjone
+
+      - name: Write env vars file
+        run: |
+          cat > /tmp/sevasetu-env.yaml <<'ENVEOF'
+          BETTER_AUTH_URL: "https://sevasetu-107722137045.asia-south1.run.app"
+          NEXT_PUBLIC_APP_URL: "https://sevasetu-107722137045.asia-south1.run.app"
+          NEXT_PUBLIC_APP_NAME: "SevaSetu"
+          NEXT_PUBLIC_DEFAULT_LAT: "28.6139"
+          NEXT_PUBLIC_DEFAULT_LNG: "77.2090"
+          NEXT_PUBLIC_DEFAULT_CITY: "New Delhi"
+          AADHAAR_MODE: "demo"
+          NEXT_PUBLIC_TILE_URL: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          NEXT_PUBLIC_TILE_ATTRIBUTION: "© OpenStreetMap contributors"
+          NODE_ENV: "production"
+          ENVEOF
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy sevasetu \
+            --source . \
+            --region=asia-south1 \
+            --allow-unauthenticated \
+            --memory=1Gi \
+            --cpu=1 \
+            --min-instances=0 \
+            --max-instances=3 \
+            --concurrency=80 \
+            --port=3000 \
+            --timeout=300 \
+            --env-vars-file=/tmp/sevasetu-env.yaml \
+            --update-secrets=BETTER_AUTH_SECRET=sevasetu-auth-secret:latest \
+            --quiet
+
+      - name: Smoke test
+        env:
+          URL: https://sevasetu-107722137045.asia-south1.run.app
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS "$URL/api/health" >/dev/null 2>&1; then
+              echo "ready"
+              break
+            fi
+            sleep 5
+          done
+          curl -fsS "$URL/api/health"
+          curl -fsS -o /dev/null -w "GET / HTTP %{http_code}\n" "$URL/"
+          curl -fsS -o /dev/null -w "GET /pitch HTTP %{http_code}\n" "$URL/pitch"
+          curl -fsS -o /dev/null -w "GET /browse HTTP %{http_code}\n" "$URL/browse"

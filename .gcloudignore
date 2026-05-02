@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env
+.env.local
+.env.*.local
+.next
+node_modules
+README.md
+.dockerignore
+coverage
+.vscode
+.idea
+SevaSetu_Presentation.html
+*.docx

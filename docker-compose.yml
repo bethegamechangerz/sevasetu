@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: sevasetu-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sevasetu
+    ports:
+      - "5432:5432"
+    volumes:
+      - sevasetu_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d sevasetu"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: sevasetu-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/sevasetu
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-change-me-in-production-32-bytes-min}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      NEXT_PUBLIC_APP_NAME: SevaSetu
+      NEXT_PUBLIC_DEFAULT_LAT: "28.6139"
+      NEXT_PUBLIC_DEFAULT_LNG: "77.2090"
+      NEXT_PUBLIC_DEFAULT_CITY: "New Delhi"
+      AADHAAR_MODE: demo
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+
+volumes:
+  sevasetu_db:
