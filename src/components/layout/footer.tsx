@@ -93,7 +93,7 @@ export async function Footer() {
             </p>
             <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-3 py-1 text-[11px] font-medium text-muted-foreground">
               <span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />
-              ONDC discoverable · DPDP Act 2023 compliant
+              ONDC discoverable (simulated demo) · DPDP Act 2023 compliant
             </p>
           </div>
 

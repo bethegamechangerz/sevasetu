@@ -73,8 +73,8 @@ function Hero({ locale }: { locale: Locale }) {
               <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
             </span>
             {locale === "hi"
-              ? "ONDC नेटवर्क पर लाइव · पूरे भारत में"
-              : "Live on the ONDC network · across India"}
+              ? "ONDC-डिस्कवरेबल (सिमुलेटेड डेमो) · पूरे भारत में"
+              : "ONDC-discoverable (simulated demo) · across India"}
           </span>
 
           <h1

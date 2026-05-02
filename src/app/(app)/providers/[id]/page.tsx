@@ -289,7 +289,7 @@ export default async function ProviderProfilePage({ params }: PageProps) {
                       </Badge>
                     ) : null}
                     {verified.ondc ? (
-                      <Badge variant="secondary" title="ONDC participant">
+                      <Badge variant="secondary" title="ONDC participant (simulated demo)">
                         ONDC
                       </Badge>
                     ) : null}

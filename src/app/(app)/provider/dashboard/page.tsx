@@ -108,8 +108,8 @@ export default async function ProviderDashboardPage() {
         </div>
         <div className="flex items-center gap-3">
           {ondcRegistry ? (
-            <Badge variant="success" title={`ONDC participant ${ondcRegistry.participantId}`}>
-              ONDC subscribed
+            <Badge variant="success" title={`ONDC participant ${ondcRegistry.participantId} (simulated demo)`}>
+              ONDC subscribed (demo)
             </Badge>
           ) : (
             <Badge variant="outline">ONDC not subscribed</Badge>

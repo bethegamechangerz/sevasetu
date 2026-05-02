@@ -81,8 +81,8 @@ export function ProviderCard({ data, distanceKm, primaryCategory, className }: P
                 <Badge
                   variant="outline"
                   className="gap-1 border-emerald-500/40 bg-emerald-500/10 px-1.5 py-0 text-emerald-700 dark:text-emerald-400"
-                  aria-label="ONDC participant"
-                  title="ONDC participant"
+                  aria-label="ONDC participant (simulated demo)"
+                  title="ONDC participant (simulated demo)"
                 >
                   <Sparkles className="h-3 w-3" aria-hidden="true" />
                   <span className="text-[10px] font-semibold">ONDC</span>
