@@ -4,7 +4,6 @@
 
 **A bridge of trust between India's service workers and the people who need them.**
 
-[![Deploy to Cloud Run](https://github.com/bethegamechangerz/sevasetu/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/bethegamechangerz/sevasetu/actions/workflows/deploy.yml)
 [![Live on Cloud Run](https://img.shields.io/badge/live-asia--east1-4285F4?logo=googlecloud&logoColor=white)](https://sevasetu.dmj.one)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Next.js 15](https://img.shields.io/badge/Next.js-15-000?logo=nextdotjs&logoColor=white)](https://nextjs.org)
