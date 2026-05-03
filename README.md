@@ -4,7 +4,7 @@
 
 **A bridge of trust between India's service workers and the people who need them.**
 
-[![Deploy to Cloud Run](https://github.com/divyamohan1993/sevasetu/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/divyamohan1993/sevasetu/actions/workflows/deploy.yml)
+[![Deploy to Cloud Run](https://github.com/bethegamechangerz/sevasetu/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/bethegamechangerz/sevasetu/actions/workflows/deploy.yml)
 [![Live on Cloud Run](https://img.shields.io/badge/live-asia--east1-4285F4?logo=googlecloud&logoColor=white)](https://sevasetu.dmj.one)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Next.js 15](https://img.shields.io/badge/Next.js-15-000?logo=nextdotjs&logoColor=white)](https://nextjs.org)
@@ -150,7 +150,7 @@ Every page is a Server Component by default. Client components are introduced on
 PGlite runs in the Node process, so no external database is required. The schema is created and seeded on the first request.
 
 ```bash
-git clone https://github.com/divyamohan1993/sevasetu.git
+git clone https://github.com/bethegamechangerz/sevasetu.git
 cd sevasetu
 npm install
 cp .env.example .env.local
@@ -323,7 +323,17 @@ If a `ROADMAP.md` is added later, it will take precedence over this list.
 
 **Abhay Chandel** · Reg. No. **GF202217661** · B.Tech (Cybersecurity), Final Semester
 Yogananda School of AI, Computers and Data Sciences, **Shoolini University**, Solan, H.P., India
-GitHub: https://github.com/divyamohan1993 · Project repo: https://github.com/divyamohan1993/sevasetu
+GitHub: https://github.com/bethegamechangerz · Project repo: https://github.com/bethegamechangerz/sevasetu
+
+## Maintainers and contributors
+
+| Role | Name | GitHub |
+| --- | --- | --- |
+| Author / capstone owner | **Abhay Chandel** | [@bethegamechangerz](https://github.com/bethegamechangerz) |
+| Capstone mentor | **Ms. Maya Thapa** | (Shoolini University) |
+| Engineering, build, deploy | **Divya Mohan** | [@divyamohan1993](https://github.com/divyamohan1993) |
+
+The full contributor list is at https://github.com/bethegamechangerz/sevasetu/graphs/contributors.
 
 ### Acknowledgements
 

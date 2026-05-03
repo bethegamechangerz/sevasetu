@@ -2,7 +2,7 @@
 
 SevaSetu is a B.Tech Cybersecurity capstone by **Abhay Chandel** (Reg. GF202217661, Shoolini University). Security is the project, not a feature bolted onto it. This document tells you what is in scope, how the system defends itself, and how to report a vulnerability without making it public first.
 
-The live deployment is `https://sevasetu.dmj.one`. The source is `https://github.com/divyamohan1993/sevasetu` (MIT).
+The live deployment is `https://sevasetu.dmj.one`. The source is `https://github.com/bethegamechangerz/sevasetu` (MIT).
 
 ---
 
@@ -75,7 +75,7 @@ Bring your own test accounts; the demo seed accounts on the live URL are fair ga
 ### In scope
 
 - The live application at `https://sevasetu.dmj.one` and any subpath under it.
-- The `main` branch of `https://github.com/divyamohan1993/sevasetu`.
+- The `main` branch of `https://github.com/bethegamechangerz/sevasetu`.
 - The Cloud Run service that hosts the build.
 - The CI pipeline configuration files in `.github/`.
 - Anything that allows escaping the simulated KYC or ONDC flows into a real-world impact (for example, leaking another user's session).

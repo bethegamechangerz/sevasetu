@@ -17,7 +17,7 @@ This project follows the [Contributor Covenant 2.1](./CODE_OF_CONDUCT.md). By pa
 You need Node.js 20+ and Docker (for Postgres) or any Postgres 14+ reachable via `DATABASE_URL`.
 
 ```bash
-git clone https://github.com/divyamohan1993/sevasetu.git
+git clone https://github.com/bethegamechangerz/sevasetu.git
 cd sevasetu
 npm install
 cp .env.example .env.local

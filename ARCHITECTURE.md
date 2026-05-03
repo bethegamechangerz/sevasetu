@@ -2,7 +2,7 @@
 
 A deep technical reference for the SevaSetu codebase. Pairs with [`README.md`](./README.md) (project overview and quickstart), [`SECURITY.md`](./SECURITY.md) (threat model and controls), and [`ROADMAP.md`](./ROADMAP.md) (forward plan).
 
-> SevaSetu is a local services marketplace for Bharat. B.Tech Cybersecurity capstone by **Abhay Chandel** (Reg. GF202217661, Shoolini University). Live at `https://sevasetu.dmj.one`. Custom domain `sevasetu.dmj.one` mapped (CNAME pending propagation). Source: `https://github.com/divyamohan1993/sevasetu`.
+> SevaSetu is a local services marketplace for Bharat. B.Tech Cybersecurity capstone by **Abhay Chandel** (Reg. GF202217661, Shoolini University). Live at `https://sevasetu.dmj.one`. Custom domain `sevasetu.dmj.one` mapped (CNAME pending propagation). Source: `https://github.com/bethegamechangerz/sevasetu`.
 
 ---
 

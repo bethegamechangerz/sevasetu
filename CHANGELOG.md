@@ -50,5 +50,5 @@ First public release. Built end-to-end on 2026-05-02 and 2026-05-03 as the B.Tec
 - Response headers set HSTS, `X-Frame-Options=DENY`, `X-Content-Type-Options=nosniff`, `Referrer-Policy=strict-origin-when-cross-origin`, and `Permissions-Policy=camera=(), microphone=(), geolocation=(self)`. ([next.config.ts](next.config.ts))
 - The `audit_log` table records every KYC verification, booking transition, and provider creation.
 
-[Unreleased]: https://github.com/divyamohan1993/sevasetu/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/divyamohan1993/sevasetu/releases/tag/v0.1.0
+[Unreleased]: https://github.com/bethegamechangerz/sevasetu/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/bethegamechangerz/sevasetu/releases/tag/v0.1.0
